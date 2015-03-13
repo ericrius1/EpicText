@@ -7,7 +7,11 @@ var TextParticles = function() {
   this.maxImpulseLength = this.maxImpulse.length();
   this.hue = 0.8;
   this.saturation = 1;
-  this.numParticles = 1;
+  this.numParticles = 100;
+  this.gridContainer = new THREE.Object3D();
+  scene.add(this.gridContainer);
+
+  this.gridContainer.position.x = -50;
   var pCloudGeo = new THREE.Geometry();
   for (var i = 0; i < this.numParticles; i++) {
     pCloudGeo.vertices.push(new THREE.Vector3(randFloat(0, this.size), randFloat(0, this.size), 0));
@@ -15,6 +19,7 @@ var TextParticles = function() {
   this.pCloud = new THREE.PointCloud(pCloudGeo, new THREE.PointCloudMaterial({
     color: 0xff0000
   }));
+  this.pCloud.position.copy(this.gridContainer.position)
   scene.add(this.pCloud);
   this.xNormalDown = new THREE.Vector3(0, -1, 0);
   this.xNormalUp = new THREE.Vector3(0, 1, 0);
@@ -47,10 +52,9 @@ var TextParticles = function() {
         impulse: new THREE.Vector3(.01, randFloat(this.minImpulse.y, this.maxImpulse.y), 0.01),
         mesh: new THREE.Mesh(quadGeo, cellMat)
       }
-      scene.add(cell.mesh)//
+      this.gridContainer.add(cell.mesh)//
       cell.mesh.position.set(x + this.cellSize/2,y + this.cellSize/2,-1)
       this.grid[xIndex].push(cell);
-
 
     }
 
