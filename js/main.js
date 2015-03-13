@@ -1,4 +1,4 @@
-var scene, camera, renderer, controls, line, textParticles;
+var scene, camera, renderer, controls, line, textParticles, stats;
 
 
 var init = function(){
@@ -10,7 +10,10 @@ var init = function(){
 	renderer.setPixelRatio( window.devicePixelRatio );
 	document.body.appendChild(renderer.domElement);
 
-
+	stats = new Stats();
+	stats.domElement.style.position = "absolute";
+	stats.domElement.style.top = '0px';
+	document.body.appendChild(stats.domElement);
 
 
 	controls = new THREE.OrbitControls(camera);
@@ -24,7 +27,7 @@ var animate = function(){
 	requestAnimationFrame(animate);
 	controls.update();
 	renderer.render(scene, camera);
-
+	stats.update();
 	textParticles.update();
 
 }
@@ -37,11 +40,20 @@ function onWindowResize(){
 	renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+
+window.addEventListener('resize', onWindowResize)
+
+
+
+
+
+//utils
+
 function map(value, min1, max1, min2, max2) {
   return min2 + (max2 - min2) * ((value - min1) / (max1 - min1));
 }
 
-window.addEventListener('resize', onWindowResize)
+var randFloat = THREE.Math.randFloat;
 
 
 
